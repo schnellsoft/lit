@@ -6,11 +6,32 @@
     <title>Lit | Learning with demos | Snel Dan Software</title>
     <meta
       name="description"
-      content="Lit teaching notes and demos from Snel Dan Software."
+      content="Lit teaching components and interactive demos from Snel Dan Software."
     />
     <meta name="robots" content="index,follow" />
-    <link rel="canonical" href="https://sneldan.ro/learning/programming.html" />
-    <link rel="icon" href="https://sneldan.ro/favicon.ico" sizes="any" />
+    <meta name="author" content="Snel Dan Intreprindere Individuala" />
+    <link rel="canonical" href="https://schnellsoft.github.io/lit/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lit | Learning with demos" />
+    <meta
+      property="og:description"
+      content="Lit teaching components and interactive demos from Snel Dan Software."
+    />
+    <meta property="og:url" content="https://schnellsoft.github.io/lit/" />
+    <meta property="og:locale" content="en_US" />
+    <meta
+      property="og:site_name"
+      content="Snel Dan Intreprindere Individuala"
+    />
+    <meta
+      property="og:image"
+      content="https://schnellsoft.github.io/icons/android-chrome-512x512.png"
+    />
+    <link
+      rel="icon"
+      href="https://schnellsoft.github.io/favicon.ico"
+      sizes="any"
+    />
     <meta name="theme-color" content="#1a5c6b" />
     <link
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&amp;family=Sora:wght@400;500;600&amp;display=swap"
@@ -27,25 +48,95 @@
           rel="noopener noreferrer"
           aria-label="WhatsApp +40 775 524 199"
         >
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            aria-hidden="true"
+            fill="currentColor"
+          >
+            <path
+              d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5s0-.4 0-.5-.6-1.5-.8-2-.2-.5-.5-.5h-.5c-.2 0-.5.1-.7.3a2.4 2.4 0 0 0-.8 1.8 4.2 4.2 0 0 0 .9 2.2 9.6 9.6 0 0 0 3.7 3.5 12 12 0 0 0 1.3.5h.4c.4 0 .7 0 1-.2a4.6 4.6 0 0 0 1.1-.7 2 2 0 0 0 .4-1.2c0-.1 0-.2-.2-.3z"
+            />
+            <path
+              d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"
+            />
+          </svg>
           <span>WhatsApp · +40 775 524 199</span>
         </a>
       </div>
       <div class="hero-band">
         <header class="site-header">
-          <a class="brand" href="https://sneldan.ro/"
+          <a class="brand" href="https://schnellsoft.github.io/"
+            ><svg
+              viewBox="8.9 10.3 30.8 30.8"
+              width="40"
+              height="40"
+              aria-hidden="true"
+            >
+              <circle cx="24.3" cy="25.7" r="15.4" fill="#1a5c6b" />
+              <path
+                d="M0,0 C-0.4186,-.25 -0.2963,-.7 0.1497,-1 C0.0146,-.7 -0.186,-.25 0,0Z"
+                transform="translate(18.7085 33.5034) rotate(28.2518) scale(24.6479)"
+                fill="#fff"
+              />
+              <path
+                d="M0,0 C-0.4186,-.25 -0.2963,-.7 0.1497,-1 C0.0146,-.7 -0.186,-.25 0,0Z"
+                transform="translate(35.1457 33.2086) rotate(-92.8061) scale(25.4331)"
+                fill="#fff"
+              />
+              <path
+                d="M30.0178,15.2683 C29.7287,15.5036 28.8621,16.1959 28.2834,16.68 C27.7046,17.1641 27.118,17.6627 26.5452,18.1728 C25.9723,18.6829 25.3989,19.2063 24.8463,19.7406 C24.2937,20.2748 23.7477,20.8213 23.2298,21.3781 C22.7118,21.9348 22.2075,22.5029 21.7386,23.0809 C21.2696,23.6589 20.6366,24.5518 20.4163,24.846"
+                fill="none"
+                stroke="#1a5c6b"
+                stroke-width=".5"
+                stroke-linecap="round"
+              /></svg
             ><span>Snel Dan Intreprindere Individuala</span></a
           >
-          <nav class="site-nav" id="site-nav">
-            <a href="https://sneldan.ro/#learning" aria-current="page"
-              >Learning</a
+          <div class="site-menu">
+            <button
+              class="site-menu-toggle"
+              type="button"
+              aria-label="Open navigation menu"
+              aria-expanded="false"
+              aria-controls="site-nav"
             >
-            <a href="https://sneldan.ro/#contact" class="contact">Contact</a>
-          </nav>
+              <svg
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <nav class="site-nav" id="site-nav">
+              <a href="https://schnellsoft.github.io/#production">Production</a>
+              <a href="https://schnellsoft.github.io/#products">Products</a>
+              <a
+                href="https://schnellsoft.github.io/#learning"
+                aria-current="page"
+                >Learning</a
+              >
+              <a href="https://schnellsoft.github.io/#contact" class="contact"
+                >Contact</a
+              >
+            </nav>
+          </div>
         </header>
+
         <div class="hero-inner">
           <p class="eyebrow">Programming · Lit</p>
           <h1>Lit</h1>
-          <p>Teaching notes and interactive demos for Lit web components.</p>
+          <p>
+            Teaching components for Lit web components — each lesson has a short
+            explanation and a live demo you can try in the browser.
+          </p>
         </div>
         <div>
           <svg
@@ -74,8 +165,9 @@
           />
         </svg>
       </div>
+
       <main>
-        <h2>Topics</h2>
+        <h2>Official documentation</h2>
         <ul class="feature-list">
           <li>
             <a
@@ -84,26 +176,172 @@
               rel="noopener noreferrer"
               >Lit documentation</a
             >
-            (official)
-          </li>
-          <li>
-            <a href="./repeat-vs-map.html">map() vs repeat()</a> — keyed list
-            rendering in Lit
+            — official guides on lit.dev
           </li>
         </ul>
+
+        <h2 style="margin-top: 36px">Lit components</h2>
+        <p>
+          Interactive teaching components available in this repository. Open a
+          page to read the explanation and use the live demo.
+        </p>
+        <ul class="feature-list">
+          <li>
+            <a href="./repeat-vs-map.html"
+              ><code>repeat-vs-map</code> — map() vs repeat()</a
+            >
+            — keyed list rendering and DOM reuse
+          </li>
+        </ul>
+
         <div class="cta-row">
           <a
             class="btn btn-primary"
-            href="https://sneldan.ro/learning/programming.html"
-            >Programming on sneldan.ro</a
+            href="https://schnellsoft.github.io/learning/programming.html"
+            >Programming on the main site</a
           >
-          <a class="btn btn-ghost" href="https://github.com/schnellsoft/lit"
+          <a
+            class="btn btn-ghost"
+            href="https://github.com/schnellsoft/lit"
+            target="_blank"
+            rel="noopener noreferrer"
             >GitHub repo</a
           >
         </div>
       </main>
+
       <footer class="site-footer">
-        <div class="footer-bottom" style="border: 0; margin: 0; padding: 0">
+        <div class="footer-grid">
+          <div>
+            <h3>Contact</h3>
+            <ul class="footer-contacts">
+              <li>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.6a2 2 0 0 1 1.7 2z"
+                  /></svg
+                ><a href="tel:+40775524199">+40 775 524 199</a>
+              </li>
+              <li>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 7 9-7" /></svg
+                ><a href="mailto:deltasoft7@gmail.com">deltasoft7@gmail.com</a>
+              </li>
+              <li>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <path d="M12 21s7-5.3 7-11a7 7 0 1 0-14 0c0 5.7 7 11 7 11z" />
+                  <circle cx="12" cy="10" r="2.5" /></svg
+                ><svg
+                  class="ro-flag"
+                  viewBox="0 0 27 18"
+                  width="22"
+                  height="15"
+                  aria-label="Romania"
+                  role="img"
+                >
+                  <rect width="9" height="18" fill="#002B7F" />
+                  <rect x="9" width="9" height="18" fill="#FCD116" />
+                  <rect x="18" width="9" height="18" fill="#CE1126" /></svg
+                ><span>Str. Belsugului nr. 2, Calarasi, România</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Learning with demos</h3>
+            <ul class="footer-contacts">
+              <li>
+                <a
+                  href="https://schnellsoft.github.io/learning/programming.html"
+                  >Programming</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/math.html"
+                  >Math</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/physics.html"
+                  >Physics</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/chemistry.html"
+                  >Chemistry</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/biology.html"
+                  >Biology</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/history.html"
+                  >History</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/philosophy.html"
+                  >Philosophy</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Products</h3>
+            <ul class="footer-contacts">
+              <li>
+                <a
+                  href="https://schnellsoft.github.io/products/site-builder.html"
+                  >Site Builder</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/products/dcms.html"
+                  >Dental Clinic Management</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/products/geometry.html"
+                  >Geometry for Math Students</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/products/portfolio.html"
+                  >Sites we built</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
           <span>Snel Dan Intreprindere Individuala</span>
           <span
             >© 2027 Snel Dan Intreprindere Individuala. All rights

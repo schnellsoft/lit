@@ -13,7 +13,7 @@ html {
 
 body {
   margin: 0;
-  font-family: Sora, system-ui, sans-serif;
+  font-family: Roboto, system-ui, sans-serif;
   color: #e8f5f7;
   background: #07151c
 }
@@ -85,7 +85,7 @@ a:hover {
   gap: 12px;
   color: #fff;
   text-decoration: none;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Roboto, system-ui, sans-serif;
   font-weight: 700;
   font-size: 20px
 }
@@ -134,9 +134,10 @@ a:hover {
 
 .hero-inner h1 {
   margin: 12px 0 16px;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Roboto, system-ui, sans-serif;
   font-size: clamp(32px, 5vw, 52px);
-  line-height: 1.08
+  line-height: 1.08;
+  font-weight: 700
 }
 
 .hero-inner p {
@@ -164,9 +165,10 @@ main {
 
 main h2 {
   margin: 0 0 14px;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Roboto, system-ui, sans-serif;
   font-size: clamp(24px, 3vw, 34px);
   line-height: 1.15;
+  font-weight: 700;
   color: #fff
 }
 
@@ -248,8 +250,9 @@ main a:not(.btn) {
 
 .footer-grid h3 {
   margin: 0 0 12px;
-  font-family: Fraunces, Georgia, serif;
+  font-family: Roboto, system-ui, sans-serif;
   font-size: 18px;
+  font-weight: 700;
   color: #fff
 }
 

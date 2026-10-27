@@ -59,7 +59,7 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #b7d7de;
+  color: #d0e8ed;
   text-decoration: none;
   font-weight: 500
 }
@@ -95,7 +95,7 @@ html {
 }
 
 .site-nav a {
-  color: #b7d7de;
+  color: #d0e8ed;
   text-decoration: none
 }
 
@@ -125,7 +125,7 @@ html {
   font-size: 13px;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #8fc4ce;
+  color: #b7dfe7;
   font-weight: 600
 }
 
@@ -140,7 +140,7 @@ html {
   margin: 0;
   font-size: 18px;
   line-height: 1.65;
-  color: #c5dde3;
+  color: #dcecf0;
   max-width: 640px
 }
 
@@ -168,7 +168,7 @@ main h2 {
 main p,
 main li {
   line-height: 1.65;
-  color: #3a5563
+  color: #1a3340
 }
 
 .feature-list {
@@ -210,7 +210,7 @@ main li {
 
 .site-footer {
   background: #1a5c6b;
-  color: #d7ecef;
+  color: #e8f5f7;
   padding: 48px 32px 36px;
   margin-top: auto
 }
@@ -231,7 +231,7 @@ main li {
 }
 
 .footer-grid a {
-  color: #d7ecef;
+  color: #e8f5f7;
   text-decoration: none
 }
 

@@ -43,7 +43,7 @@ export class RepeatVsMap extends LitElement {
     .lede {
       margin: 0 0 1.25rem;
       max-width: 52rem;
-      color: #4b5563;
+      color: #334155;
     }
 
     .controls {
@@ -100,7 +100,7 @@ export class RepeatVsMap extends LitElement {
     .hint {
       margin: 0 0 0.85rem;
       font-size: 0.875rem;
-      color: #6b7280;
+      color: #4b5563;
     }
 
     ul {
@@ -148,7 +148,7 @@ export class RepeatVsMap extends LitElement {
 
       .lede,
       .hint {
-        color: #9ca3af;
+        color: #d1d5db;
       }
 
       button {

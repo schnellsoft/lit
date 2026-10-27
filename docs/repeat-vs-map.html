@@ -90,6 +90,96 @@
       .live-demo > p {
         padding: 0 20px;
       }
+      .demo-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 20px 10px;
+      }
+      .btn-code {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font: inherit;
+        font-size: 0.92rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.45rem 0.9rem;
+        border: 1.5px solid #6a9eab;
+        border-radius: 999px;
+        background: #e6f1f5;
+        color: #0f2834;
+      }
+      .btn-code:hover {
+        background: #d4e5ec;
+      }
+      .btn-code .brackets {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+      dialog:modal {
+        overscroll-behavior: contain;
+      }
+      dialog.code-dialog[open] {
+        width: min(920px, calc(100vw - 2rem));
+        max-height: min(85vh, 900px);
+        margin: auto;
+        padding: 0;
+        border: 1px solid #6a9eab;
+        border-radius: 14px;
+        background: #0f2834;
+        color: #e8f5f7;
+        box-shadow: 0 24px 64px rgb(15 40 52 / 45%);
+      }
+      dialog.code-dialog::backdrop {
+        background: rgb(15 40 52 / 58%);
+        backdrop-filter: blur(2px);
+        overflow: hidden;
+        overscroll-behavior: contain;
+      }
+      .code-dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid #2f6674;
+      }
+      .code-dialog-header h2 {
+        margin: 0;
+        font-family: Fraunces, Georgia, serif;
+        font-size: 1.15rem;
+        color: #fff;
+      }
+      .code-dialog-header button {
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.4rem 0.85rem;
+        border: 1px solid #6a9eab;
+        border-radius: 999px;
+        background: #1a5c6b;
+        color: #fff;
+      }
+      .code-dialog-body {
+        margin: 0;
+        padding: 16px 18px 20px;
+        overflow: auto;
+        max-height: calc(min(85vh, 900px) - 4rem);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.82rem;
+        line-height: 1.55;
+        color: #dcecf0;
+        background: #0a1f28;
+        border-radius: 0 0 14px 14px;
+        white-space: pre;
+      }
+      .code-dialog-body code {
+        background: transparent;
+        padding: 0;
+        color: inherit;
+        font: inherit;
+      }
       main h3 {
         margin: 28px 0 10px;
         font-family: Fraunces, Georgia, serif;
@@ -300,8 +390,34 @@
             <code>map()</code> and keyed <code>repeat()</code> keep (or lose)
             per-row values.
           </p>
+          <div class="demo-toolbar">
+            <button
+              type="button"
+              class="btn-code"
+              id="open-component-code"
+              aria-haspopup="dialog"
+              aria-controls="component-code-dialog"
+            >
+              Code <span class="brackets">(&lt; &gt;)</span>
+            </button>
+          </div>
           <repeat-vs-map></repeat-vs-map>
         </section>
+
+        <dialog
+          class="code-dialog"
+          id="component-code-dialog"
+          closedby="any"
+          aria-labelledby="component-code-title"
+        >
+          <div class="code-dialog-header">
+            <h2 id="component-code-title">repeat-vs-map.ts</h2>
+            <form method="dialog">
+              <button type="submit" autofocus>Close</button>
+            </form>
+          </div>
+          <pre class="code-dialog-body"><code id="component-code-source">Loading…</code></pre>
+        </dialog>
 
         <h3>How to try the demo</h3>
         <ol
@@ -539,6 +655,51 @@ repeat(
         </div>
       </footer>
       <script src="./assets/nav.js"></script>
+      <script type="module">
+        const dialog = document.getElementById("component-code-dialog");
+        const openBtn = document.getElementById("open-component-code");
+        const codeEl = document.getElementById("component-code-source");
+        const sourceUrl = "./components/repeat-vs-map/repeat-vs-map.ts";
+        let loaded = false;
+
+        async function ensureSource() {
+          if (loaded) return;
+          try {
+            const res = await fetch(sourceUrl);
+            if (!res.ok) throw new Error(String(res.status));
+            codeEl.textContent = await res.text();
+            loaded = true;
+          } catch {
+            codeEl.textContent =
+              "Could not load component source. See components/repeat-vs-map/repeat-vs-map.ts in the repository.";
+          }
+        }
+
+        openBtn?.addEventListener("click", async () => {
+          await ensureSource();
+          dialog?.showModal();
+        });
+
+        // Light-dismiss fallback where closedby is unsupported (e.g. Safari).
+        if (dialog && !("closedBy" in HTMLDialogElement.prototype)) {
+          const outside = (event) => {
+            const rect = dialog.getBoundingClientRect();
+            return (
+              event.clientX < rect.left ||
+              event.clientX > rect.right ||
+              event.clientY < rect.top ||
+              event.clientY > rect.bottom
+            );
+          };
+          let pressedOutside = false;
+          dialog.addEventListener("pointerdown", (event) => {
+            pressedOutside = outside(event);
+          });
+          dialog.addEventListener("pointerup", (event) => {
+            if (pressedOutside && outside(event)) dialog.close();
+          });
+        }
+      </script>
     </div>
   </body>
 </html>

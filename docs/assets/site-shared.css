@@ -1,15 +1,21 @@
-/* Shared chrome for product / portfolio pages */
+/* Shared chrome for Lit teaching pages — dark theme */
 *,
 *::before,
 *::after {
   box-sizing: border-box
 }
 
+html {
+  color-scheme: dark;
+  accent-color: #3d9aab;
+  scroll-behavior: smooth
+}
+
 body {
   margin: 0;
   font-family: Sora, system-ui, sans-serif;
-  color: #142833;
-  background: #d4e5ec
+  color: #e8f5f7;
+  background: #07151c
 }
 
 a {
@@ -20,10 +26,6 @@ a:hover {
   opacity: .85
 }
 
-html {
-  scroll-behavior: smooth
-}
-
 :focus-visible {
   outline: 3px solid #7eb8c4;
   outline-offset: 4px
@@ -31,17 +33,18 @@ html {
 
 .site-page {
   --theme-color: #1a5c6b;
-  --deep-color: #0f2834;
-  --ink: #142833;
-  --mist: #d4e5ec;
-  --foam: #e6f1f5;
-  --card: #ebf4f7;
-  --card-edge: #a9c5d0;
+  --deep-color: #07151c;
+  --ink: #e8f5f7;
+  --mist: #0f2834;
+  --foam: #143641;
+  --card: #122a35;
+  --card-edge: #2f6674;
+  --muted: #b7d7de;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background:
-    linear-gradient(180deg, color-mix(in srgb, #0f2834 40%, transparent), color-mix(in srgb, #d4e5ec 80%, transparent)),
+    linear-gradient(180deg, color-mix(in srgb, #020a0e 70%, transparent), color-mix(in srgb, #0f2834 88%, transparent)),
     url("https://images.unsplash.com/photo-1741533748911-444e33e4b023?auto=format&fit=crop&w=1600&q=70") center 35% / cover fixed
 }
 
@@ -51,7 +54,7 @@ html {
   align-items: center;
   gap: 12px;
   padding: 8px 32px;
-  background: #0a1f28;
+  background: #020a0e;
   font-size: 13px
 }
 
@@ -110,7 +113,7 @@ html {
 }
 
 .hero-band {
-  background: #0f2834;
+  background: #07151c;
   color: #fff;
   position: relative
 }
@@ -155,20 +158,28 @@ main {
   max-width: 860px;
   margin: 0 auto;
   padding: 48px 32px 72px;
-  width: 100%
+  width: 100%;
+  color: #e8f5f7
 }
 
 main h2 {
   margin: 0 0 14px;
   font-family: Fraunces, Georgia, serif;
   font-size: clamp(24px, 3vw, 34px);
-  line-height: 1.15
+  line-height: 1.15;
+  color: #fff
 }
 
 main p,
 main li {
   line-height: 1.65;
-  color: #1a3340
+  color: #c5dde3
+}
+
+main a:not(.btn) {
+  color: #9fd4df;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px
 }
 
 .feature-list {
@@ -198,14 +209,14 @@ main li {
 }
 
 .btn-primary {
-  background: #1a5c6b;
+  background: #248092;
   color: #fff
 }
 
 .btn-ghost {
-  border: 1.5px solid #6a9eab;
-  color: #0f2834;
-  background: #e6f1f5
+  border: 1.5px solid #3d7a88;
+  color: #e8f5f7;
+  background: #143641
 }
 
 .btn-facebook {
@@ -220,10 +231,11 @@ main li {
 }
 
 .site-footer {
-  background: #1a5c6b;
-  color: #e8f5f7;
+  background: #0a1f28;
+  color: #d7ecef;
   padding: 48px 32px 36px;
-  margin-top: auto
+  margin-top: auto;
+  border-top: 1px solid #2f6674
 }
 
 .footer-grid {
@@ -242,7 +254,7 @@ main li {
 }
 
 .footer-grid a {
-  color: #e8f5f7;
+  color: #d7ecef;
   text-decoration: none
 }
 
@@ -271,24 +283,25 @@ main li {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  border: 1px solid #6a9eab;
+  border: 1px solid #3d7a88;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: color-mix(in srgb, #0f2834 35%, transparent)
+  background: color-mix(in srgb, #07151c 55%, transparent)
 }
 
 .footer-bottom {
   max-width: 1160px;
   margin: 28px auto 0;
   padding-top: 18px;
-  border-top: 1px solid #6a9eab;
+  border-top: 1px solid #2f6674;
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: space-between;
-  font-size: 14px
+  font-size: 14px;
+  color: #a9c5d0
 }
 
 .ro-flag {
@@ -296,7 +309,7 @@ main li {
   height: 15px;
   border-radius: 2px;
   flex: none;
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 12%)
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 35%)
 }
 
 @media (max-width: 700px) {
@@ -320,7 +333,7 @@ main li {
     height: 46px;
     align-items: center;
     justify-content: center;
-    border: 1px solid #6a9eab;
+    border: 1px solid #3d7a88;
     border-radius: 12px;
     background: transparent;
     color: #fff;
@@ -338,7 +351,7 @@ main li {
     gap: 0;
     border: 1px solid #2f6674;
     border-radius: 14px;
-    background: #0f2834;
+    background: #0a1f28;
     z-index: 5
   }
 

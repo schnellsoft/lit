@@ -18,16 +18,15 @@ export interface DemoItem {
 export class RepeatVsMap extends LitElement {
   static override styles = css`
     :host {
-      /* Always light: parent Lit teaching pages use a light shell; system
-         dark mode must not flip host text to light-on-light. */
-      color-scheme: light;
+      /* Matches LitTh dark teaching pages. */
+      color-scheme: dark;
       display: block;
       box-sizing: border-box;
       width: min(960px, 100%);
       margin: 0 auto;
       padding: 1.5rem;
       font: 16px/1.45 system-ui, 'Segoe UI', Roboto, sans-serif;
-      color: #1f2937;
+      color: #e8f5f7;
       background: transparent;
     }
 
@@ -42,12 +41,13 @@ export class RepeatVsMap extends LitElement {
       font-size: 1.75rem;
       font-weight: 600;
       letter-spacing: -0.02em;
+      color: #fff;
     }
 
     .lede {
       margin: 0 0 1.25rem;
       max-width: 52rem;
-      color: #334155;
+      color: #c5dde3;
     }
 
     .controls {
@@ -61,18 +61,18 @@ export class RepeatVsMap extends LitElement {
       font: inherit;
       cursor: pointer;
       padding: 0.4rem 0.85rem;
-      border: 1px solid #d1d5db;
+      border: 1px solid #3d7a88;
       border-radius: 0.375rem;
-      background: #f9fafb;
-      color: inherit;
+      background: #143641;
+      color: #e8f5f7;
     }
 
     button:hover {
-      background: #f3f4f6;
+      background: #1a5c6b;
     }
 
     button:focus-visible {
-      outline: 2px solid #2563eb;
+      outline: 2px solid #7eb8c4;
       outline-offset: 2px;
     }
 
@@ -89,22 +89,23 @@ export class RepeatVsMap extends LitElement {
     }
 
     section {
-      border: 1px solid #e5e7eb;
+      border: 1px solid #2f6674;
       border-radius: 0.5rem;
       padding: 1rem;
-      background: #fff;
+      background: #0a1f28;
     }
 
     section h2 {
       margin: 0 0 0.35rem;
       font-size: 1.1rem;
       font-weight: 600;
+      color: #fff;
     }
 
     .hint {
       margin: 0 0 0.85rem;
       font-size: 0.875rem;
-      color: #4b5563;
+      color: #a9c5d0;
     }
 
     ul {
@@ -123,7 +124,7 @@ export class RepeatVsMap extends LitElement {
       gap: 0.5rem;
       padding: 0.5rem 0.65rem;
       border-radius: 0.375rem;
-      background: #f3f4f6;
+      background: #122a35;
     }
 
     .label {
@@ -135,14 +136,25 @@ export class RepeatVsMap extends LitElement {
       font: inherit;
       width: 100%;
       padding: 0.35rem 0.5rem;
-      border: 1px solid #d1d5db;
+      border: 1px solid #3d7a88;
       border-radius: 0.25rem;
-      background: #fff;
+      background: #07151c;
+      color: #e8f5f7;
+    }
+
+    input::placeholder {
+      color: #7ea8b4;
     }
 
     input:focus-visible {
-      outline: 2px solid #2563eb;
+      outline: 2px solid #7eb8c4;
       outline-offset: 1px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      color: #9fd4df;
     }
   `;
 

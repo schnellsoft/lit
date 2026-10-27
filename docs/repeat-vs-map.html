@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>map() vs repeat() | Lit | Learning with demos | Snel Dan Software</title>
+  <meta name="description" content="Learn the difference between Array.map() and Lit's keyed repeat() directive with the repeat-vs-map teaching component.">
+  <meta name="robots" content="index,follow">
+  <meta name="author" content="Snel Dan Intreprindere Individuala">
+  <link rel="canonical" href="https://sneldan.ro/learning/lit/repeat-vs-map.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="map() vs repeat() | Lit learning demo">
+  <meta property="og:description" content="Side-by-side Lit demo: why keyed repeat() preserves per-item DOM state while map() reuses nodes by index.">
+  <meta property="og:url" content="https://sneldan.ro/learning/lit/repeat-vs-map.html">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Snel Dan Intreprindere Individuala">
+  <meta property="og:image" content="https://sneldan.ro/icons/android-chrome-512x512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="map() vs repeat() | Lit learning demo">
+  <meta name="twitter:description" content="Side-by-side Lit demo of Array.map() versus keyed repeat().">
+  <link rel="icon" href="https://sneldan.ro/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://sneldan.ro/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://sneldan.ro/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#1a5c6b">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&amp;family=Sora:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://sneldan.ro/assets/site-shared.css">
+  <style>
+    main h3 {
+      margin: 28px 0 10px;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 1.35rem;
+      color: #142833;
+    }
+    main code, main pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    main code {
+      background: #e6f1f5;
+      padding: 0.12em 0.4em;
+      border-radius: 4px;
+      color: #0f2834;
+    }
+    main pre {
+      margin: 14px 0;
+      padding: 16px 18px;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid #a9c5d0;
+      background: #ebf4f7;
+      color: #142833;
+      line-height: 1.55;
+    }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 18px 0 8px;
+    }
+    .compare article {
+      background: linear-gradient(165deg, #ebf4f7, #e6f1f5);
+      border: 1px solid #a9c5d0;
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .compare h3 { margin-top: 0; }
+    .compare p { margin: 0; }
+    @media (max-width: 700px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="site-page">
+
+  <div class="top-bar">
+    <a href="https://wa.me/40775524199" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp +40 775 524 199">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5s0-.4 0-.5-.6-1.5-.8-2-.2-.5-.5-.5h-.5c-.2 0-.5.1-.7.3a2.4 2.4 0 0 0-.8 1.8 4.2 4.2 0 0 0 .9 2.2 9.6 9.6 0 0 0 3.7 3.5 12 12 0 0 0 1.3.5h.4c.4 0 .7 0 1-.2a4.6 4.6 0 0 0 1.1-.7 2 2 0 0 0 .4-1.2c0-.1 0-.2-.2-.3z"/><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg> <span>WhatsApp · +40 775 524 199</span>
+    </a>
+  </div>
+  <div class="hero-band">
+    <header class="site-header">
+      <a class="brand" href="https://sneldan.ro/"><svg viewBox="8.9 10.3 30.8 30.8" width="40" height="40" aria-hidden="true"><circle cx="24.3" cy="25.7" r="15.4" fill="#1a5c6b"/><path d="M0,0 C-0.4186,-.25 -0.2963,-.7 0.1497,-1 C0.0146,-.7 -0.186,-.25 0,0Z" transform="translate(18.7085 33.5034) rotate(28.2518) scale(24.6479)" fill="#fff"/><path d="M0,0 C-0.4186,-.25 -0.2963,-.7 0.1497,-1 C0.0146,-.7 -0.186,-.25 0,0Z" transform="translate(35.1457 33.2086) rotate(-92.8061) scale(25.4331)" fill="#fff"/><path d="M30.0178,15.2683 C29.7287,15.5036 28.8621,16.1959 28.2834,16.68 C27.7046,17.1641 27.118,17.6627 26.5452,18.1728 C25.9723,18.6829 25.3989,19.2063 24.8463,19.7406 C24.2937,20.2748 23.7477,20.8213 23.2298,21.3781 C22.7118,21.9348 22.2075,22.5029 21.7386,23.0809 C21.2696,23.6589 20.6366,24.5518 20.4163,24.846" fill="none" stroke="#1a5c6b" stroke-width=".5" stroke-linecap="round"/></svg><span>Snel Dan Intreprindere Individuala</span></a>
+      <div class="site-menu">
+        <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-nav">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <nav class="site-nav" id="site-nav">
+          <a href="https://sneldan.ro/#production">Production</a>
+          <a href="https://sneldan.ro/#products">Products</a>
+          <a href="https://sneldan.ro/#learning" aria-current="page">Learning</a>
+          <a href="https://sneldan.ro/#contact" class="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="hero-inner">
+      <p class="eyebrow">Programming · Lit</p>
+      <h1>map() vs repeat()</h1>
+      <p>A Lit teaching component that shows, side by side, how list rendering keyed by index differs from list rendering keyed by identity.</p>
+    </div>
+    <div><svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,60 C240,10 480,110 720,60 C960,10 1200,110 1440,60 L1440,120 L0,120Z" fill="#1a5c6b"/></svg></div>
+  </div>
+  <div style="background:#1a5c6b"><svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,60 C240,10 480,110 720,60 C960,10 1200,110 1440,60 L1440,120 L0,120Z" fill="#d4e5ec"/></svg></div>
+
+  <main>
+    <h2>The <code>repeat-vs-map</code> component</h2>
+    <p>
+      <code>&lt;repeat-vs-map&gt;</code> is a Lit 3 custom element that renders the same list twice:
+      once with <code>Array.map()</code>, and once with Lit&rsquo;s keyed <code>repeat()</code> directive.
+      Each row has a label and an editable text field. The inputs are deliberately uncontrolled —
+      their values live in the DOM — so you can feel how Lit reuses nodes when the list order changes.
+    </p>
+    <p>Component source lives in the Lit teaching repo at <code>src/components/repeat-vs-map.ts</code>
+      (<a href="https://github.com/schnellsoft/lit" target="_blank" rel="noopener noreferrer">github.com/schnellsoft/lit</a>).</p>
+
+    <h3>How to try the demo</h3>
+    <ol class="feature-list" style="list-style:decimal;padding-left:1.3em">
+      <li>Type different text into several inputs on both panels.</li>
+      <li>Press <strong>Shuffle</strong> or <strong>Reverse</strong>.</li>
+      <li>Watch where the typed values stay: by list position (<code>map</code>) or with the item id (<code>repeat</code>).</li>
+    </ol>
+
+    <h2>map() versus repeat()</h2>
+    <div class="compare">
+      <article>
+        <h3>Array.map()</h3>
+        <p>
+          Lit treats the mapped templates like a list keyed by <strong>index</strong>.
+          When items move, DOM nodes at each position are reused and updated in place.
+          Uncontrolled input values therefore appear to &ldquo;stick&rdquo; to the row position,
+          not to the logical item.
+        </p>
+      </article>
+      <article>
+        <h3>repeat() with keys</h3>
+        <p>
+          <code>repeat(items, (item) =&gt; item.id, &hellip;)</code> associates each template with a
+          <strong>stable key</strong>. When the array is reordered, Lit moves the existing DOM
+          nodes with their items — so typed values travel with Item A, Item B, and so on.
+        </p>
+      </article>
+    </div>
+
+    <h3>When to use which</h3>
+    <ul class="feature-list">
+      <li><strong>map()</strong> — fine for static or append-only lists with no per-row DOM state.</li>
+      <li><strong>repeat()</strong> — prefer when items reorder, insert in the middle, or hold focus, selection, or form state.</li>
+    </ul>
+
+    <h3>Minimal patterns</h3>
+<pre><code>// Index-based (map)
+items.map((item) =&gt; html`&lt;li&gt;$&#123;item.label&#125;&lt;/li&gt;`)
+
+// Identity-based (repeat)
+repeat(
+  items,
+  (item) =&gt; item.id,
+  (item) =&gt; html`&lt;li&gt;$&#123;item.label&#125;&lt;/li&gt;`
+)</code></pre>
+
+    <h3>Further reading</h3>
+    <ul class="feature-list">
+      <li><a href="https://lit.dev/docs/" target="_blank" rel="noopener noreferrer">Lit documentation</a></li>
+      <li><a href="https://lit.dev/docs/templates/lists/" target="_blank" rel="noopener noreferrer">Lists and <code>repeat()</code> in Lit</a></li>
+      <li><a href="https://sneldan.ro/learning/programming.html">Back to Programming demos</a></li>
+    </ul>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://sneldan.ro/learning/programming.html">Programming section</a>
+      <a class="btn btn-ghost" href="https://sneldan.ro/#learning">All learning domains</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <h3>Contact</h3>
+        <ul class="footer-contacts">
+          <li><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.6a2 2 0 0 1 1.7 2z"/></svg><a href="tel:+40775524199">+40 775 524 199</a></li>
+          <li><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/></svg><a href="mailto:deltasoft7@gmail.com">deltasoft7@gmail.com</a></li>
+          <li><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-5.3 7-11a7 7 0 1 0-14 0c0 5.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><svg class="ro-flag" viewBox="0 0 27 18" width="22" height="15" aria-label="Romania" role="img"><rect width="9" height="18" fill="#002B7F"/><rect x="9" width="9" height="18" fill="#FCD116"/><rect x="18" width="9" height="18" fill="#CE1126"/></svg><span>Str. Belsugului nr. 2, Calarasi, România</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Learning with demos</h3>
+        <ul class="footer-contacts">
+          <li><a href="https://sneldan.ro/learning/programming.html">Programming</a></li>
+          <li><a href="https://sneldan.ro/learning/math.html">Math</a></li>
+          <li><a href="https://sneldan.ro/learning/physics.html">Physics</a></li>
+          <li><a href="https://sneldan.ro/learning/chemistry.html">Chemistry</a></li>
+          <li><a href="https://sneldan.ro/learning/biology.html">Biology</a></li>
+          <li><a href="https://sneldan.ro/learning/history.html">History</a></li>
+          <li><a href="https://sneldan.ro/learning/philosophy.html">Philosophy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Products</h3>
+        <ul class="footer-contacts">
+          <li><a href="https://sneldan.ro/products/site-builder.html">Site Builder</a></li>
+          <li><a href="https://sneldan.ro/products/dcms.html">Dental Clinic Management</a></li>
+          <li><a href="https://sneldan.ro/products/geometry.html">Geometry for Math Students</a></li>
+          <li><a href="https://sneldan.ro/products/portfolio.html">Sites we built</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Snel Dan Intreprindere Individuala</span>
+      <span>© 2027 Snel Dan Intreprindere Individuala. All rights reserved.</span>
+    </div>
+  </footer>
+  <script src="https://sneldan.ro/assets/nav.js"></script>
+</div>
+</body>
+</html>

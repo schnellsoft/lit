@@ -18,6 +18,9 @@ export interface DemoItem {
 export class RepeatVsMap extends LitElement {
   static override styles = css`
     :host {
+      /* Always light: parent Lit teaching pages use a light shell; system
+         dark mode must not flip host text to light-on-light. */
+      color-scheme: light;
       display: block;
       box-sizing: border-box;
       width: min(960px, 100%);
@@ -25,6 +28,7 @@ export class RepeatVsMap extends LitElement {
       padding: 1.5rem;
       font: 16px/1.45 system-ui, 'Segoe UI', Roboto, sans-serif;
       color: #1f2937;
+      background: transparent;
     }
 
     *,
@@ -139,42 +143,6 @@ export class RepeatVsMap extends LitElement {
     input:focus-visible {
       outline: 2px solid #2563eb;
       outline-offset: 1px;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :host {
-        color: #e5e7eb;
-      }
-
-      .lede,
-      .hint {
-        color: #d1d5db;
-      }
-
-      button {
-        background: #1f2937;
-        border-color: #374151;
-        color: #e5e7eb;
-      }
-
-      button:hover {
-        background: #111827;
-      }
-
-      section {
-        background: #111827;
-        border-color: #374151;
-      }
-
-      li {
-        background: #1f2937;
-      }
-
-      input {
-        background: #0b1220;
-        border-color: #374151;
-        color: #e5e7eb;
-      }
     }
   `;
 

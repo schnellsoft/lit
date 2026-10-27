@@ -208,6 +208,17 @@ main li {
   background: #e6f1f5
 }
 
+.btn-facebook {
+  background: #1877f2;
+  color: #fff;
+  border: 1.5px solid #166fe5
+}
+
+.btn-facebook:hover {
+  opacity: 1;
+  background: #166fe5
+}
+
 .site-footer {
   background: #1a5c6b;
   color: #e8f5f7;

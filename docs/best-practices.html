@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lit best practices | Lit | Learning with demos | Snel Dan Software</title>
+    <meta
+      name="description"
+      content="Lit render() best practices with positive and negative TypeScript examples: purity, bindings, directives, async, SSR."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="Snel Dan Intreprindere Individuala" />
+    <link
+      rel="canonical"
+      href="https://schnellsoft.github.io/lit/best-practices.html"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Lit best practices | Lit learning" />
+    <meta
+      property="og:description"
+      content="Render purity, bindings, directives, async Task, SSR — each rule with Avoid and Prefer examples."
+    />
+    <meta
+      property="og:url"
+      content="https://schnellsoft.github.io/lit/best-practices.html"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta
+      property="og:site_name"
+      content="Snel Dan Intreprindere Individuala"
+    />
+    <meta
+      property="og:image"
+      content="https://sneldan.ro/promo/snel-dan-og-share.jpg"
+    />
+    <meta
+      property="og:image:secure_url"
+      content="https://sneldan.ro/promo/snel-dan-og-share.jpg"
+    />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Snel Dan Software — Lit learning demos"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lit best practices | Lit learning" />
+    <meta
+      name="twitter:description"
+      content="Lit render() best practices with Avoid and Prefer TypeScript examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://sneldan.ro/promo/snel-dan-og-share.jpg"
+    />
+    <link
+      rel="icon"
+      href="https://schnellsoft.github.io/favicon.ico"
+      sizes="any"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://schnellsoft.github.io/icons/favicon-32x32.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://schnellsoft.github.io/icons/apple-touch-icon.png"
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#07151c" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/site-shared.css" />
+    <style>
+      main {
+        max-width: 920px;
+      }
+      .toc {
+        margin: 0 0 36px;
+        padding: 18px 20px;
+        border: 1px solid #2f6674;
+        border-radius: 14px;
+        background: #122a35;
+      }
+      .toc h2 {
+        margin: 0 0 12px;
+        font-size: 1.15rem;
+      }
+      .toc ol {
+        margin: 0;
+        padding-left: 1.25em;
+        columns: 2;
+        gap: 24px;
+      }
+      .toc li {
+        margin: 0 0 6px;
+        break-inside: avoid;
+      }
+      @media (max-width: 640px) {
+        .toc ol {
+          columns: 1;
+        }
+      }
+      .rule {
+        margin: 0 0 28px;
+        padding: 22px 20px 20px;
+        border: 1px solid #2f6674;
+        border-radius: 14px;
+        background: linear-gradient(165deg, #122a35, #0f2834);
+      }
+      .rule h2 {
+        margin: 0 0 10px;
+        font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+        display: flex;
+        align-items: baseline;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+      }
+      .rule .num {
+        color: #9fd4df;
+        font-variant-numeric: tabular-nums;
+      }
+      .rule .blurb {
+        margin: 0 0 16px;
+      }
+      .rule .sub {
+        margin: 18px 0 10px;
+        font-size: 1.05rem;
+        color: #fff;
+      }
+      .ex {
+        margin: 0 0 12px;
+      }
+      .badge {
+        display: inline-block;
+        margin: 0 0 6px;
+        padding: 0.2em 0.65em;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .badge-bad {
+        background: color-mix(in srgb, #b91c1c 55%, #0a1f28);
+        color: #fecaca;
+        border: 1px solid #7f1d1d;
+      }
+      .badge-good {
+        background: color-mix(in srgb, #15803d 45%, #0a1f28);
+        color: #bbf7d0;
+        border: 1px solid #166534;
+      }
+      .ex.bad pre {
+        border-color: #7f1d1d;
+        background: color-mix(in srgb, #450a0a 35%, #0a1f28);
+      }
+      .ex.good pre {
+        border-color: #166534;
+        background: color-mix(in srgb, #052e16 40%, #0a1f28);
+      }
+      main pre {
+        margin: 0;
+        padding: 14px 16px;
+        overflow-x: auto;
+        border-radius: 10px;
+        border: 1px solid #2f6674;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.82rem;
+        line-height: 1.5;
+        color: #dcecf0;
+        white-space: pre;
+      }
+      main pre code {
+        background: transparent;
+        padding: 0;
+        color: inherit;
+        font: inherit;
+      }
+      main code {
+        background: #143641;
+        padding: 0.12em 0.4em;
+        border-radius: 4px;
+        color: #e8f5f7;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.92em;
+      }
+      .cheat {
+        margin: 8px 0 28px;
+        overflow-x: auto;
+        border: 1px solid #2f6674;
+        border-radius: 14px;
+        background: #0a1f28;
+      }
+      .cheat table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+      .cheat th,
+      .cheat td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid #2f6674;
+        vertical-align: top;
+      }
+      .cheat th {
+        color: #fff;
+        background: #122a35;
+      }
+      .cheat tr:last-child td {
+        border-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-page">
+      <div class="top-bar">
+        <a
+          href="https://wa.me/40775524199"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="WhatsApp +40 775 524 199"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            aria-hidden="true"
+            fill="currentColor"
+          >
+            <path
+              d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9s-.4-.1-.6.1-.7.9-.8 1-.3.2-.6.1a7.4 7.4 0 0 1-2.2-1.4 8.2 8.2 0 0 1-1.5-1.9c-.2-.3 0-.4.1-.6l.5-.6c.1-.2.2-.3.3-.5s0-.4 0-.5-.6-1.5-.8-2-.2-.5-.5-.5h-.5c-.2 0-.5.1-.7.3a2.4 2.4 0 0 0-.8 1.8 4.2 4.2 0 0 0 .9 2.2 9.6 9.6 0 0 0 3.7 3.5 12 12 0 0 0 1.3.5h.4c.4 0 .7 0 1-.2a4.6 4.6 0 0 0 1.1-.7 2 2 0 0 0 .4-1.2c0-.1 0-.2-.2-.3z"
+            />
+            <path
+              d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"
+            />
+          </svg>
+          <span>WhatsApp · +40 775 524 199</span>
+        </a>
+      </div>
+      <div class="hero-band">
+        <header class="site-header">
+          <a class="brand" href="https://schnellsoft.github.io/"
+            ><svg
+              viewBox="8.9 10.3 30.8 30.8"
+              width="40"
+              height="40"
+              aria-hidden="true"
+            >
+              <circle cx="24.3" cy="25.7" r="15.4" fill="#1a5c6b" />
+              <path
+                d="M0,0 C-0.4186,-.25 -0.2963,-.7 0.1497,-1 C0.0146,-.7 -0.186,-.25 0,0Z"
+                transform="translate(18.7085 33.5034) rotate(28.2518) scale(24.6479)"
+                fill="#fff"
+              />
+              <path
+                d="M0,0 C-0.4186,-.25 -0.2963,-.7 0.1497,-1 C0.0146,-.7 -0.186,-.25 0,0Z"
+                transform="translate(35.1457 33.2086) rotate(-92.8061) scale(25.4331)"
+                fill="#fff"
+              />
+              <path
+                d="M30.0178,15.2683 C29.7287,15.5036 28.8621,16.1959 28.2834,16.68 C27.7046,17.1641 27.118,17.6627 26.5452,18.1728 C25.9723,18.6829 25.3989,19.2063 24.8463,19.7406 C24.2937,20.2748 23.7477,20.8213 23.2298,21.3781 C22.7118,21.9348 22.2075,22.5029 21.7386,23.0809 C21.2696,23.6589 20.6366,24.5518 20.4163,24.846"
+                fill="none"
+                stroke="#1a5c6b"
+                stroke-width=".5"
+                stroke-linecap="round"
+              /></svg
+            ><span>Snel Dan Intreprindere Individuala</span></a
+          >
+          <div class="site-menu">
+            <button
+              class="site-menu-toggle"
+              type="button"
+              aria-label="Open navigation menu"
+              aria-expanded="false"
+              aria-controls="site-nav"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <nav class="site-nav" id="site-nav">
+              <a href="https://schnellsoft.github.io/#production">Production</a>
+              <a href="https://schnellsoft.github.io/#products">Products</a>
+              <a
+                href="https://schnellsoft.github.io/#learning"
+                aria-current="page"
+                >Learning</a
+              >
+              <a href="https://schnellsoft.github.io/#contact" class="contact"
+                >Contact</a
+              >
+            </nav>
+          </div>
+        </header>
+
+        <div class="hero-inner">
+          <p class="eyebrow">Programming · Lit</p>
+          <h1>Lit best practices</h1>
+          <p>
+            Practical rules for Lit 3 <code>render()</code> and related
+            lifecycle — each with an Avoid example and a Prefer example in
+            TypeScript.
+          </p>
+        </div>
+        <div>
+          <svg
+            class="wave"
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,60 C240,10 480,110 720,60 C960,10 1200,110 1440,60 L1440,120 L0,120Z"
+              fill="#0a1f28"
+            />
+          </svg>
+        </div>
+      </div>
+      <div style="background: #0a1f28">
+        <svg
+          class="wave"
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,60 C240,10 480,110 720,60 C960,10 1200,110 1440,60 L1440,120 L0,120Z"
+            fill="#0f2834"
+          />
+        </svg>
+      </div>
+
+      <main>
+        <h2>How to read this guide</h2>
+        <p>
+          Examples use Lit 3 TypeScript decorators
+          (<code>@property</code>, <code>@state</code>,
+          <code>@customElement</code>). In plain JavaScript, declare the same
+          options with <code>static properties</code> — the runtime behavior is
+          identical. Keep <code>render()</code> pure: no fetches, no property
+          writes, no browser-only APIs.
+        </p>
+
+        <nav class="toc" aria-label="Best practices topics">
+          <h2>Topics</h2>
+          <ol>
+            <li><a href="#decorators">0 · Decorators</a></li>
+            <li><a href="#pure-render">1 · Pure render()</a></li>
+            <li><a href="#derive">2 · Derive values</a></li>
+            <li><a href="#will-update">3 · willUpdate()</a></li>
+            <li><a href="#static-styles">4 · static styles</a></li>
+            <li><a href="#bindings">5 · Bindings</a></li>
+            <li><a href="#directives">6 · Directives</a></li>
+            <li><a href="#nothing">7 · nothing</a></li>
+            <li><a href="#stable-refs">8 · Stable references</a></li>
+            <li><a href="#split">9 · Split components</a></li>
+            <li><a href="#async">10 · Async data</a></li>
+            <li><a href="#unsafe-html">11 · unsafeHTML</a></li>
+            <li><a href="#ssr">12 · SSR</a></li>
+            <li><a href="#request-update">13 · requestUpdate()</a></li>
+          </ol>
+        </nav>
+
+
+        <article class="rule" id="decorators">
+          <h2><span class="num">0</span> Prefer TypeScript decorators</h2>
+          <p class="blurb">In TypeScript Lit apps, use @property / @state / @customElement. Use static properties for plain JavaScript (behavior is the same). Do not mix legacy and standard decorator styles in one project.</p>
+          <h3 class="sub">Avoid: verbose static properties in TypeScript</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>@customElement(&#x27;my-counter&#x27;)
+export class MyCounter extends LitElement {
+  static properties = {
+    count: { type: Number },
+  };
+  declare count: number;
+  constructor() {
+    super();
+    this.count = 0;
+  }
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@customElement(&#x27;my-counter&#x27;)
+export class MyCounter extends LitElement {
+  @property({ type: Number }) count = 0;
+}</code></pre>
+        </div><h3 class="sub">Avoid: wrong tsconfig for legacy decorators</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>// tsconfig — useDefineForClassFields defaults to true (TS 3.7+)
+{
+  &quot;compilerOptions&quot;: {
+    &quot;experimentalDecorators&quot;: true
+    // missing: &quot;useDefineForClassFields&quot;: false
+  }
+}
+// Result: class fields shadow Lit accessors; @property stops updating.</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>{
+  &quot;compilerOptions&quot;: {
+    &quot;experimentalDecorators&quot;: true,
+    &quot;useDefineForClassFields&quot;: false,
+    &quot;strict&quot;: true,
+    &quot;noImplicitOverride&quot;: true
+  }
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="pure-render">
+          <h2><span class="num">1</span> Keep render() pure and fast</h2>
+          <p class="blurb">render() should be a pure function of reactive properties and state: same inputs, same template, no side effects, cheap enough to run on every update.</p>
+          <h3 class="sub">Do not set reactive properties inside render()</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  this.count = this.items.length; // schedules ANOTHER update
+  return html`&lt;p&gt;${this.count}&lt;/p&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;p&gt;${this.items.length}&lt;/p&gt;`;
+}
+
+// Or cache in willUpdate when you need a field:
+willUpdate(changed: PropertyValues) {
+  if (changed.has(&#x27;items&#x27;)) this._count = this.items.length;
+}</code></pre>
+        </div><h3 class="sub">Do not fetch or mutate DOM in render()</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  fetch(`/api/user/${this.userId}`)
+    .then((r) =&gt; r.json())
+    .then((u) =&gt; (this.user = u));
+  return html`&lt;p&gt;${this.user?.name}&lt;/p&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>updated(changed: PropertyValues) {
+  if (changed.has(&#x27;userId&#x27;)) this._load();
+}
+async _load() {
+  const r = await fetch(`/api/user/${this.userId}`);
+  this.user = await r.json();
+}
+render() {
+  return html`&lt;p&gt;${this.user?.name ?? &#x27;Loading…&#x27;}&lt;/p&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="derive">
+          <h2><span class="num">2</span> Derive values, don’t store them</h2>
+          <p class="blurb">Every stored value that can be computed from other state is a chance for the two to drift apart. Keep one source of truth.</p>
+          <h3 class="sub">Avoid redundant counters kept in sync by hand</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>@state() items: Item[] = [];
+@state() remaining = 0;
+
+addItem(item: Item) {
+  this.items = [...this.items, item];
+  // oops: remaining is now stale
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@state() items: Item[] = [];
+
+render() {
+  const remaining = this.items.filter((i) =&gt; !i.done).length;
+  return html`&lt;p&gt;${remaining} left&lt;/p&gt;`;
+}</code></pre>
+        </div><h3 class="sub">Cheap derivation: getter; expensive: willUpdate cache</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>@property() firstName = &#x27;&#x27;;
+@property() lastName = &#x27;&#x27;;
+@state() fullName = &#x27;&#x27;;
+
+updated(changed: PropertyValues) {
+  if (changed.has(&#x27;firstName&#x27;) || changed.has(&#x27;lastName&#x27;)) {
+    this.fullName = `${this.firstName} ${this.lastName}`; // extra render
+  }
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@property() firstName = &#x27;&#x27;;
+@property() lastName = &#x27;&#x27;;
+
+get fullName() {
+  return `${this.firstName} ${this.lastName}`;
+}
+render() {
+  return html`&lt;h2&gt;${this.fullName}&lt;/h2&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="will-update">
+          <h2><span class="num">3</span> Use willUpdate() for expensive derivations</h2>
+          <p class="blurb">willUpdate(changedProps) runs before render(). Changes made there do not schedule another update.</p>
+          <h3 class="sub">Avoid deriving in updated() (stale flash + second render)</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>@property() query = &#x27;&#x27;;
+@state() results: string[] = [];
+
+updated(changed: PropertyValues) {
+  if (changed.has(&#x27;query&#x27;)) {
+    this.results = search(this.query); // after render with OLD results
+  }
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>willUpdate(changed: PropertyValues) {
+  if (changed.has(&#x27;query&#x27;)) {
+    this.results = search(this.query); // same cycle, one render
+  }
+}</code></pre>
+        </div><h3 class="sub">Guard with changed.has()</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>willUpdate() {
+  this._index = buildSearchIndex(this.documents); // every update
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>willUpdate(changed: PropertyValues) {
+  if (changed.has(&#x27;documents&#x27;)) {
+    this._index = buildSearchIndex(this.documents);
+  }
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="static-styles">
+          <h2><span class="num">4</span> Put static styles in static styles</h2>
+          <p class="blurb">static styles are parsed once per class and shared. Styles in the template are re-parsed per instance.</p>
+          <h3 class="sub">Avoid &lt;style&gt; inside the template</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`
+    &lt;style&gt;.card { padding: 16px; }&lt;/style&gt;
+    &lt;div class=&quot;card&quot;&gt;&lt;h2&gt;${this.title}&lt;/h2&gt;&lt;/div&gt;
+  `;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>static styles = css`
+  .card { padding: 16px; border-radius: 8px; }
+  h2 { margin: 0 0 8px; }
+`;
+render() {
+  return html`&lt;div class=&quot;card&quot;&gt;&lt;h2&gt;${this.title}&lt;/h2&gt;&lt;/div&gt;`;
+}</code></pre>
+        </div><h3 class="sub">Dynamic colors via CSS variables, not css`` interpolation</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>static styles = css`
+  .box { background: ${this.color}; } // not an instance; invalid
+`;</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>static styles = css`
+  .box { background: var(--box-color, #1a5c6b); }
+`;
+render() {
+  return html`&lt;div
+    class=&quot;box&quot;
+    style=${styleMap({ &#x27;--box-color&#x27;: this.color })}
+  &gt;&lt;/div&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="bindings">
+          <h2><span class="num">5</span> Use the right binding types</h2>
+          <p class="blurb">Wrong binding syntax causes &quot;[object Object]&quot;, sticky boolean attributes, or broken class lists.</p>
+          <h3 class="sub">Objects need property bindings</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;user-list users=&quot;${this.users}&quot;&gt;&lt;/user-list&gt;`;
+  // child gets &quot;[object Object],…&quot;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;user-list .users=${this.users}&gt;&lt;/user-list&gt;`;
+}</code></pre>
+        </div><h3 class="sub">Boolean attributes need ?attr=</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;button disabled=&quot;${this.loading}&quot;&gt;Save&lt;/button&gt;`;
+  // loading=false → disabled=&quot;false&quot; → still disabled
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;button ?disabled=${this.loading}&gt;Save&lt;/button&gt;`;
+}</code></pre>
+        </div><h3 class="sub">classMap / styleMap instead of string concat</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  const cls = &#x27;btn &#x27; + (this.primary ? &#x27;primary &#x27; : &#x27;&#x27;);
+  return html`&lt;button class=${cls}&gt;Go&lt;/button&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;button
+    class=${classMap({ btn: true, primary: this.primary })}
+  &gt;Go&lt;/button&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="directives">
+          <h2><span class="num">6</span> Use directives where they help</h2>
+          <p class="blurb">Use the simplest correct tool. Reach for a directive when it solves a real issue (keys, optional attrs, caching).</p>
+          <h3 class="sub">Keyed lists: repeat() vs map()</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`${this.todos.map(
+    (t) =&gt; html`&lt;li&gt;&lt;input value=${t.text}&gt; ${t.text}&lt;/li&gt;`
+  )}`;
+  // reorder: DOM reused by INDEX — focus/text jump
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`${repeat(
+    this.todos,
+    (t) =&gt; t.id,
+    (t) =&gt; html`&lt;li&gt;&lt;input .value=${t.text}&gt; ${t.text}&lt;/li&gt;`
+  )}`;
+}</code></pre>
+        </div><h3 class="sub">Optional attributes: ifDefined()</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;a href=&quot;${this.url}&quot;&gt;Docs&lt;/a&gt;`;
+  // url undefined → href=&quot;undefined&quot;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;a href=${ifDefined(this.url)}&gt;Docs&lt;/a&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="nothing">
+          <h2><span class="num">7</span> Return nothing for empty states</h2>
+          <p class="blurb">nothing is Lit’s explicit “render nothing / remove this attribute”. Avoid the &amp;&amp; trap that prints &quot;0&quot;.</p>
+          <h3 class="sub">The &amp;&amp; trap</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`${this.items.length &amp;&amp; html`&lt;ul&gt;…&lt;/ul&gt;`}`;
+  // length === 0 → literally prints &quot;0&quot;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`${
+    this.items.length &gt; 0 ? html`&lt;ul&gt;…&lt;/ul&gt;` : nothing
+  }`;
+}</code></pre>
+        </div><h3 class="sub">Omit empty attributes</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;input aria-label=&quot;${this.label ?? &#x27;&#x27;}&quot;&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;input aria-label=${this.label ?? nothing}&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="stable-refs">
+          <h2><span class="num">8</span> Don’t re-create handlers or objects unnecessarily</h2>
+          <p class="blurb">Lit re-renders a child when a received property changes by reference. Object/array literals in the template are new every time.</p>
+          <h3 class="sub">Hoist stable option objects</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;chart-view
+    .options=${{ theme: &#x27;dark&#x27;, animate: false }}
+  &gt;&lt;/chart-view&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>const CHART_OPTIONS = { theme: &#x27;dark&#x27;, animate: false };
+
+render() {
+  return html`&lt;chart-view .options=${CHART_OPTIONS}&gt;&lt;/chart-view&gt;`;
+}</code></pre>
+        </div><h3 class="sub">Memoize filtered arrays in willUpdate</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;item-list
+    .items=${this.items.filter((i) =&gt; i.visible)}
+  &gt;&lt;/item-list&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>willUpdate(changed: PropertyValues) {
+  if (changed.has(&#x27;items&#x27;)) {
+    this._visible = this.items.filter((i) =&gt; i.visible);
+  }
+}
+render() {
+  return html`&lt;item-list .items=${this._visible}&gt;&lt;/item-list&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="split">
+          <h2><span class="num">9</span> Split into small components</h2>
+          <p class="blurb">A 300-line render() is hard to read and reuse. Use helpers for presentation; child components for local state.</p>
+          <h3 class="sub">Break giant templates</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`
+    &lt;header&gt;…40 lines…&lt;/header&gt;
+    &lt;main&gt;…120 lines…&lt;/main&gt;
+    &lt;footer&gt;…30 lines…&lt;/footer&gt;
+  `;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`
+    ${this._renderHeader()}
+    &lt;main&gt;
+      &lt;filter-bar .filters=${this.filters}&gt;&lt;/filter-bar&gt;
+      &lt;data-table .rows=${this._rows}&gt;&lt;/data-table&gt;
+    &lt;/main&gt;
+    ${this._renderFooter()}
+  `;
+}</code></pre>
+        </div><h3 class="sub">Local UI state belongs in a child</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>_renderDropdown() {
+  // uses this._open, this._query on the PARENT
+  // every keystroke re-renders the whole parent
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@customElement(&#x27;my-dropdown&#x27;)
+export class MyDropdown extends LitElement {
+  @state() private _open = false;
+  @state() private _query = &#x27;&#x27;;
+  @property({ type: Array }) options: string[] = [];
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="async">
+          <h2><span class="num">10</span> Handle async data deliberately</h2>
+          <p class="blurb">Async work stays outside render(). Model idle / loading / error / success and abort stale responses. Prefer @lit/task.</p>
+          <h3 class="sub">Render every state explicitly</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>async connectedCallback() {
+  super.connectedCallback();
+  this.user = await (await fetch(&#x27;/api/user&#x27;)).json();
+}
+render() {
+  return html`&lt;p&gt;${this.user.name}&lt;/p&gt;`; // throws while undefined
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@state() private _user?: User;
+@state() private _error?: Error;
+
+render() {
+  if (this._error) return html`&lt;p class=&quot;err&quot;&gt;${this._error.message}&lt;/p&gt;`;
+  if (!this._user) return html`&lt;p&gt;Loading…&lt;/p&gt;`;
+  return html`&lt;p&gt;${this._user.name}&lt;/p&gt;`;
+}</code></pre>
+        </div><h3 class="sub">Prefer Task for args, abort, and states</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>// hand-rolled loading / error / abort in every component</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>private _userTask = new Task(this, {
+  task: async ([id], { signal }) =&gt; {
+    const res = await fetch(`/api/user/${id}`, { signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json() as Promise&lt;User&gt;;
+  },
+  args: () =&gt; [this.userId] as const,
+});
+
+render() {
+  return this._userTask.render({
+    pending: () =&gt; html`&lt;p&gt;Loading…&lt;/p&gt;`,
+    complete: (u) =&gt; html`&lt;p&gt;${u.name}&lt;/p&gt;`,
+    error: (e) =&gt; html`&lt;p&gt;${(e as Error).message}&lt;/p&gt;`,
+  });
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="unsafe-html">
+          <h2><span class="num">11</span> Be careful with unsafeHTML</h2>
+          <p class="blurb">Normal bindings escape values. unsafeHTML / unsafeSVG turn that protection off.</p>
+          <h3 class="sub">Never pass user content unsanitized</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;div&gt;${unsafeHTML(this.comment.body)}&lt;/div&gt;`;
+  // XSS via &lt;img onerror=…&gt;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>render() {
+  return html`&lt;div&gt;${this.comment.body}&lt;/div&gt;`; // escaped
+}</code></pre>
+        </div><h3 class="sub">Sanitize if you must render HTML</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;article&gt;${unsafeHTML(marked.parse(this.markdown))}&lt;/article&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>willUpdate(changed: PropertyValues) {
+  if (changed.has(&#x27;markdown&#x27;)) {
+    this._safe = DOMPurify.sanitize(marked.parse(this.markdown) as string);
+  }
+}
+render() {
+  return html`&lt;article&gt;${unsafeHTML(this._safe)}&lt;/article&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="ssr">
+          <h2><span class="num">12</span> Mind SSR and hydration</h2>
+          <p class="blurb">On the server, only constructor / willUpdate / render run. First client render must match the server markup.</p>
+          <h3 class="sub">No browser APIs in render()</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  const wide = window.innerWidth &gt; 800;
+  const theme = localStorage.getItem(&#x27;theme&#x27;);
+  return html`&lt;div class=${wide ? &#x27;wide&#x27; : &#x27;narrow&#x27;}&gt;…&lt;/div&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@state() private _wide = false; // same default on server + first paint
+
+connectedCallback() {
+  super.connectedCallback();
+  this._mq = window.matchMedia(&#x27;(min-width: 800px)&#x27;);
+  this._wide = this._mq.matches;
+}
+
+render() {
+  return html`&lt;div class=${this._wide ? &#x27;wide&#x27; : &#x27;narrow&#x27;}&gt;…&lt;/div&gt;`;
+}</code></pre>
+        </div><h3 class="sub">Deterministic IDs and dates</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>render() {
+  return html`&lt;span id=&quot;u-${Math.random()}&quot;&gt;${new Date().getFullYear()}&lt;/span&gt;`;
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@property() uid = &#x27;&#x27;;
+@property({ type: Number }) year = 0;
+
+render() {
+  return html`&lt;span id=${`u-${this.uid}`}&gt;${this.year}&lt;/span&gt;`;
+}</code></pre>
+        </div>
+        </article>
+        <article class="rule" id="request-update">
+          <h2><span class="num">13</span> Use requestUpdate() sparingly</h2>
+          <p class="blurb">Declare reactive properties and let Lit batch updates. Manual requestUpdate() is for changes Lit cannot see.</p>
+          <h3 class="sub">Immutable updates instead of silent mutation</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>addTodo(t: Todo) {
+  this.todos.push(t); // same reference → no update
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>addTodo(t: Todo) {
+  this.todos = [...this.todos, t];
+}</code></pre>
+        </div><h3 class="sub">Don’t sprinkle requestUpdate after every assignment</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>reset() {
+  this.name = &#x27;&#x27;;
+  this.requestUpdate();
+  this.age = 0;
+  this.requestUpdate();
+}</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@property() name = &#x27;&#x27;;
+@property({ type: Number }) age = 0;
+
+reset() {
+  this.name = &#x27;&#x27;;
+  this.age = 0; // batched into one render
+}</code></pre>
+        </div><h3 class="sub">@state for internal reactivity, not public @property</h3><div class="ex bad">
+          <p class="badge badge-bad">Avoid</p>
+          <pre><code>@property() _isOpen = false; // becomes public API</code></pre>
+        </div><div class="ex good">
+          <p class="badge badge-good">Prefer</p>
+          <pre><code>@state() private _isOpen = false;</code></pre>
+        </div>
+        </article>
+
+        <h2>Quick reference</h2>
+        <div class="cheat">
+          <table>
+            <thead>
+              <tr>
+                <th>Need to…</th>
+                <th>Put it in…</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Derive a value from changed props</td>
+                <td><code>willUpdate()</code> (cheap: a getter)</td>
+              </tr>
+              <tr>
+                <td>Read or touch DOM after render</td>
+                <td><code>firstUpdated()</code> / <code>updated()</code></td>
+              </tr>
+              <tr>
+                <td>Add listeners, timers, subscriptions</td>
+                <td>
+                  <code>connectedCallback()</code> + cleanup in
+                  <code>disconnectedCallback()</code>
+                </td>
+              </tr>
+              <tr>
+                <td>Load data</td>
+                <td><code>Task</code> (<code>@lit/task</code>) or lifecycle + <code>@state</code></td>
+              </tr>
+              <tr>
+                <td>Browser-only APIs (SSR)</td>
+                <td><code>connectedCallback()</code> / <code>firstUpdated()</code></td>
+              </tr>
+              <tr>
+                <td>Share styles</td>
+                <td><code>static styles</code> (array of <code>css``</code>)</td>
+              </tr>
+              <tr>
+                <td>Pass objects/arrays to a child</td>
+                <td><code>.prop=</code> with a stable reference</td>
+              </tr>
+              <tr>
+                <td>Keyed, reorderable list</td>
+                <td><code>repeat()</code></td>
+              </tr>
+              <tr>
+                <td>Optional attribute</td>
+                <td><code>ifDefined()</code> / <code>nothing</code></td>
+              </tr>
+              <tr>
+                <td>Mutate a collection</td>
+                <td>Replace it with a new one (immutable update)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Further reading</h2>
+        <ul class="feature-list">
+          <li>
+            <a href="./repeat-vs-map.html"
+              ><code>repeat-vs-map</code> live demo</a
+            >
+            — rule 6 in the browser
+          </li>
+          <li>
+            <a
+              href="https://lit.dev/docs/components/rendering/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Lit rendering docs</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://lit.dev/docs/templates/directives/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Built-in directives</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://lit.dev/docs/data/task/"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><code>@lit/task</code></a
+            >
+          </li>
+          <li><a href="./index.html">All Lit components</a></li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="./index.html">Lit components</a>
+          <a class="btn btn-ghost" href="./repeat-vs-map.html"
+            >map() vs repeat() demo</a
+          >
+          <a
+            class="btn btn-facebook"
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fschnellsoft.github.io%2Flit%2Fbest-practices.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Share on Facebook</a
+          >
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-grid">
+          <div>
+            <h3>Contact</h3>
+            <ul class="footer-contacts">
+              <li>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.6a2 2 0 0 1 1.7 2z"
+                  /></svg
+                ><a href="tel:+40775524199">+40 775 524 199</a>
+              </li>
+              <li>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 7 9-7" /></svg
+                ><a href="mailto:deltasoft7@gmail.com">deltasoft7@gmail.com</a>
+              </li>
+              <li>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <path d="M12 21s7-5.3 7-11a7 7 0 1 0-14 0c0 5.7 7 11 7 11z" />
+                  <circle cx="12" cy="10" r="2.5" /></svg
+                ><svg
+                  class="ro-flag"
+                  viewBox="0 0 27 18"
+                  width="22"
+                  height="15"
+                  aria-label="Romania"
+                  role="img"
+                >
+                  <rect width="9" height="18" fill="#002B7F" />
+                  <rect x="9" width="9" height="18" fill="#FCD116" />
+                  <rect x="18" width="9" height="18" fill="#CE1126" /></svg
+                ><span>Str. Belsugului nr. 2, Calarasi, România</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Learning with demos</h3>
+            <ul class="footer-contacts">
+              <li>
+                <a
+                  href="https://schnellsoft.github.io/learning/programming.html"
+                  >Programming</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/math.html"
+                  >Math</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/physics.html"
+                  >Physics</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/chemistry.html"
+                  >Chemistry</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/biology.html"
+                  >Biology</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/history.html"
+                  >History</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/learning/philosophy.html"
+                  >Philosophy</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Products</h3>
+            <ul class="footer-contacts">
+              <li>
+                <a
+                  href="https://schnellsoft.github.io/products/site-builder.html"
+                  >Site Builder</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/products/dcms.html"
+                  >Dental Clinic Management</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/products/geometry.html"
+                  >Geometry for Math Students</a
+                >
+              </li>
+              <li>
+                <a href="https://schnellsoft.github.io/products/portfolio.html"
+                  >Sites we built</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>Snel Dan Intreprindere Individuala</span>
+          <span
+            >© 2027 Snel Dan Intreprindere Individuala. All rights
+            reserved.</span
+          >
+        </div>
+      </footer>
+      <script src="./assets/nav.js"></script>
+    </div>
+  </body>
+</html>

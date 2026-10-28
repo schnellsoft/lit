@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lit Property vs Attribute Binding Demo</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h3 {
+      margin-top: 2rem;
+      color: #000;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+    .demo-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+    }
+    code {
+      background: #f1f1f1;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background: #007acc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .hint {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+  </style>
+  <!-- Import Lit via UNPKG ESD module -->
+  <script type="module">
+    import { LitElement, html } from 'https://unpkg.com/lit@3.1.0/index.js?module';
+
+    class LitBindingDemo extends LitElement {
+      static properties = {
+        myArray: { type: Array },
+        isDisabled: { type: Boolean },
+        inputValue: { type: String }
+      };
+
+      constructor() {
+        super();
+        this.myArray = ['Apple', 'Banana'];
+        this.isDisabled = true;
+        this.inputValue = 'Initial Text';
+      }
+
+      // Render directly to light DOM so users can easily see markup changes in standard DevTools
+      createRenderRoot() {
+        return this;
+      }
+
+      render() {
+        return html`
+          <div class="demo-box">
+            <h3>1. Passing Complex Data (Arrays/Objects)</h3>
+            <p>Open browser DevTools to see how they render.</p>
+            
+            <!-- Attribute syntax stringifies data -->
+            <div test-attr=${this.myArray}>
+              <code>attr=</code> approach: Check my HTML markup in DevTools (renders as <code>test-attr="Apple,Banana"</code>)
+            </div>
+            <br>
+            <!-- Property syntax attaches data directly onto the JS object -->
+            <div .testProp=${this.myArray}>
+              <code>.prop=</code> approach: Look up my <code>testProp</code> property via JavaScript console.
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <h3>2. Boolean States</h3>
+            <!-- Attribute: Renders as disabled="true". If this was false, it would still disable the button! -->
+            <button disabled=${this.isDisabled}>Attr Disabled</button>
+
+            <!-- Property: Correctly updates the boolean state directly on the element node -->
+            <button .disabled=${this.isDisabled}>Prop Disabled</button>
+            
+            <!-- Boolean attribute syntax (?) is the preferred attribute way for native booleans -->
+            <button ?disabled=${this.isDisabled}>Boolean Attr (?disabled)</button>
+          </div>
+
+          <div class="demo-box">
+            <h3>3. Form Inputs (State vs. Markup)</h3>
+            <p>Type something in both fields below, then click "Reset State". Only the property-bound field resets perfectly.</p>
+            
+            <div>
+              <label>Attribute bound: </label>
+              <input value=${this.inputValue}>
+              <div class="hint">Updates standard HTML attribute; ignores state updates once user types.</div>
+            </div>
+            <br>
+            <div>
+              <label>Property bound: </label>
+              <input .value=${this.inputValue}>
+              <div class="hint">Directly bound to live DOM property; fully reactive.</div>
+            </div>
+
+            <br>
+            <button @click=${this.resetState}>Reset State</button>
+          </div>
+        `;
+      }
+
+      resetState() {
+        this.inputValue = 'Initial Text';
+      }
+    }
+
+    customElements.define('lit-binding-demo', LitBindingDemo);
+  </script>
+</head>
+<body>
+  <h1>Lit Bindings Playground</h1>
+  <p>This sandbox displays the interactive difference between property binding (<code>.prop=</code>) and attribute binding (<code>attr=</code>) using Lit.</p>
+  
+  <lit-binding-demo></lit-binding-demo>
+</body>
+</html>
